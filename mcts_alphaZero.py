@@ -132,9 +132,17 @@ class MCTSPlayer(object):
         self.player = p
 
     def reset_player(self):
+        """ reset the player by clearing the tree """
         self.mcts.update_with_move(-1)
 
     def get_action(self, board, temp=1e-3, return_prob=0):
+        """compute action given the state of board
+
+        :param board: nxn state
+        :param temp: temperature
+        :param return_prob: probability of available action
+        :return:
+        """
         pass
 
     def __str__(self):
