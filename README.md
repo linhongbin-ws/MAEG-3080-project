@@ -28,6 +28,10 @@ The scripts will try to finish
 
 [Note]:
 - Try to program without copying classmate's code or other online code.
+- Program the code in the region below the comment 
+```py
+# TODO: program here
+```
 
 [comment]: <> (## Resource)
 

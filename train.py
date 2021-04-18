@@ -174,6 +174,8 @@ class TrainPipeline():
             2. policy update by sampled training data
             3. evaluated model performance (in a fixed frequency)
             4. save model (in a fixed frequency)
+            5. evaluation result
+        Plot
 
         """
         try:
@@ -182,6 +184,8 @@ class TrainPipeline():
         except KeyboardInterrupt:
             print('\n\rquit')
 
+        # plot evaluation result
+        # TODO: code here
 
 if __name__ == '__main__':
     training_pipeline = TrainPipeline()
