@@ -30,40 +30,50 @@ class TreeNode(object):
         self._P = prior_p
 
     def expand(self, action_priors):
-        """TODO: Expand tree by creating new children.
+        """Expand tree by creating new children.
         action_priors: a list of tuples of actions and their prior probability
             according to the policy function.
         """
-        pass
+        for action, prob in action_priors:
+            if action not in self._children:
+                self._children[action] = TreeNode(self, prob)
 
     def select(self, c_puct):
-        """TODO: Select action among children that gives maximum action value Q
+        """Select action among children that gives maximum action value Q
         plus bonus u(P).
         Return: A tuple of (action, next_node)
         """
-        pass
+        return max(self._children.items(),
+                   key=lambda act_node: act_node[1].get_value(c_puct))
 
     def update(self, leaf_value):
-        """TODO: Update node values from leaf evaluation.
+        """Update node values from leaf evaluation.
         leaf_value: the value of subtree evaluation from the current player's
             perspective.
         """
-        pass
+        # Count visit.
+        self._n_visits += 1
+        # Update Q, a running average of values for all visits.
+        self._Q += 1.0*(leaf_value - self._Q) / self._n_visits
 
     def update_recursive(self, leaf_value):
-        """TODO: Like a call to update(), but applied recursively for all ancestors.
+        """Like a call to update(), but applied recursively for all ancestors.
         """
         # If it is not root, this node's parent should be updated first.
-        pass
+        if self._parent:
+            self._parent.update_recursive(-leaf_value)
+        self.update(leaf_value)
 
     def get_value(self, c_puct):
-        """TODO: Calculate and return the value for this node.
+        """Calculate and return the value for this node.
         It is a combination of leaf evaluations Q, and this node's prior
         adjusted for its visit count, u.
         c_puct: a number in (0, inf) controlling the relative impact of
             value Q, and prior probability P, on this node's score.
         """
-        pass
+        self._u = (c_puct * self._P *
+                   np.sqrt(self._parent._n_visits) / (1 + self._n_visits))
+        return self._Q + self._u
 
     def is_leaf(self):
         """Check if leaf node (i.e. no nodes below this have been expanded)."""
@@ -92,22 +102,33 @@ class MCTS(object):
         self._n_playout = n_playout
 
     def _playout(self, state):
-        """TODO: Run a single playout from the root to the leaf, getting a value at
+        """Run a single playout from the root to the leaf, getting a value at
         the leaf and propagating it back through its parents.
         State is modified in-place, so a copy must be provided.
         """
+        node = self._root
+        # TODO: program here
         pass
 
     def get_move_probs(self, state, temp=1e-3):
-        """TODO: Run all playouts sequentially and return the available actions and
+        """Run all playouts sequentially and return the available actions and
         their corresponding probabilities.
         state: the current game state
         temp: temperature parameter in (0, 1] controls the level of exploration
+
+        Pipeline:
+        1. playout for n times in a loop
+        2. get n_visits for children nodes of root node
+        3. calculate action probabilities with softmax function
+            act_probs = softmax(1.0/temp * log(n_visits + 1e-10))
         """
-        pass
+        acts, act_probs = None, None
+        # TODO: program here
+
+        return acts, act_probs
 
     def update_with_move(self, last_move):
-        """TODO: Step forward in the tree, keeping everything we already know
+        """Step forward in the tree, keeping everything we already know
         about the subtree.
         """
         if last_move in self._root._children:
@@ -132,18 +153,37 @@ class MCTSPlayer(object):
         self.player = p
 
     def reset_player(self):
-        """ reset the player by clearing the tree """
         self.mcts.update_with_move(-1)
 
     def get_action(self, board, temp=1e-3, return_prob=0):
-        """compute action given the state of board
+        """ get action given current
 
-        :param board: nxn state
-        :param temp: temperature
-        :param return_prob: probability of available action
+        :param board: board object
+        :param temp: temperature parameter in (0, 1] controls the level of exploration
+        :param return_prob:
         :return:
+            move, move_probs    if return_prob is True
+            move                if return_prob is False
+
+            move: The calculated move number range in 0~board_height*board_height
+            move_probs: action probabilities, shape in 1D array (board_height*board_height,)
+
         """
-        pass
+        sensible_moves = board.availables
+        # the pi vector returned by MCTS as in the alphaGo Zero paper
+        move_probs = np.zeros(board.width*board.height)
+        if len(sensible_moves) > 0:
+            move=None
+            # TODO: program here
+            pass
+
+
+            if return_prob:
+                return move, move_probs
+            else:
+                return move
+        else:
+            print("WARNING: the board is full")
 
     def __str__(self):
         return "MCTS {}".format(self.player)
