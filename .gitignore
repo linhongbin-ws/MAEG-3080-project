@@ -12,3 +12,9 @@ model.ckpt
 .DS_Store
 
 __pycache__/
+
+mcts_alphaZero_sol.py
+
+policy_value_net_pytorch_sol.py
+
+train_sol.py
