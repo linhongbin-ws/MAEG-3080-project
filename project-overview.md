@@ -12,7 +12,7 @@
    
 	**Tutorial #3**: `2021-04-16, Friday, 10.30am~11.30am`
    
-	**Project Time**: `From 2021-04-16 to around 2021-05-20` (_Deadline to be announced_)
+	**Project Time**: `From 2021-04-16 to around 2021-05-18` 
    
 	**Q&A Time**: `0.5 hour after each tutoiral, Every Friday after 2021-04-16, 10.30am~11.30am`
 
